@@ -37,15 +37,15 @@ public class BackofficeProdutoController {
         return mv;
     }
 
-    @GetMapping("/alterarProduto/{id_produto}")
-    public ModelAndView exibirAlterarProduto(@PathVariable("id_produto") int id_produto) {
+    @GetMapping("/alterarProduto/{id}")
+    public ModelAndView exibirAlterarProduto(@PathVariable("id") int id) {
 
         ModelAndView mv = new ModelAndView("alterarProduto");
         ProdutoDAO produtoDao = new ProdutoDAO();
-        Produto p = produtoDao.getProdutos(id_produto);
+        Produto p = produtoDao.getProdutos(id);
 
         ImagemProdutoDAO imagensProdutoDAO = new ImagemProdutoDAO();
-        List<ImagemProduto> listaImagens = imagensProdutoDAO.getImagensProduto(id_produto);
+        List<ImagemProduto> listaImagens = imagensProdutoDAO.getImagensProduto(id);
 
         mv.addObject("produto", p);
         mv.addObject("listaImagens", listaImagens);
@@ -53,15 +53,15 @@ public class BackofficeProdutoController {
         return mv;
     }
 
-    @GetMapping("/detalheProduto/{id_produto}")
-    public ModelAndView verProduto(@PathVariable("id_produto") int id_produto) {
+    @GetMapping("/detalheProduto/{id}")
+    public ModelAndView verProduto(@PathVariable("id") int id) {
 
         ModelAndView mv = new ModelAndView("detalheProduto");
         ProdutoDAO produtoDao = new ProdutoDAO();
-        Produto p = produtoDao.getProdutos(id_produto);
+        Produto p = produtoDao.getProdutos(id);
 
         ImagemProdutoDAO imagensProdutoDAO = new ImagemProdutoDAO();
-        List<ImagemProduto> listaImagens = imagensProdutoDAO.getImagensProduto(id_produto);
+        List<ImagemProduto> listaImagens = imagensProdutoDAO.getImagensProduto(id);
 
         mv.addObject("produto", p);
         mv.addObject("listaImagens", listaImagens);
@@ -69,26 +69,26 @@ public class BackofficeProdutoController {
         return mv;
     }
 
-    @PutMapping("/alterarProduto/{id_produto}")
-    public ModelAndView alterarProduto(
-            @PathVariable("id_produto") int id_produto,
-            @ModelAttribute(value = "produto") Produto p,
-            @RequestParam(value = "imagem", required = false) String[] imagens) {
+  @PutMapping("/alterarProduto/{id}")
+  public ModelAndView alterarProduto(
+          @PathVariable("id") int id,
+          @ModelAttribute(value = "produto") Produto p,
+          @RequestParam(value = "imagem", required = false) String[] imagens) {
 
-        ProdutoDAO produtoDao = new ProdutoDAO();
-        produtoDao.alterarProduto(p);
+    ProdutoDAO produtoDao = new ProdutoDAO();
+    produtoDao.alterarProduto(p);
 
-        ImagemProdutoDAO imagemProdutoDao = new ImagemProdutoDAO();
-        imagemProdutoDao.deletarImagensProduto(p.getId());
+    ImagemProdutoDAO imagemProdutoDao = new ImagemProdutoDAO();
+    imagemProdutoDao.deletarImagensProduto(p.getId());
 
-        if (imagens != null) {
-            imagemProdutoDao.salvarImagensProduto(p.getId(), imagens);
-        }
 
-        ModelAndView mv = new ModelAndView("redirect:/produtos");
+    if (imagens != null) imagemProdutoDao.salvarImagensProduto(p.getId(), imagens);
+    
 
-        return mv;
-    }
+    ModelAndView mv = new ModelAndView("redirect:/produtos");
+
+    return mv;
+  }
 
     @PostMapping("/cadastrarProduto")
     public ModelAndView adicionarProduto(

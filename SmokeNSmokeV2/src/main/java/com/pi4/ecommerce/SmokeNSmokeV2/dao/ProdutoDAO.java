@@ -44,23 +44,6 @@ public class ProdutoDAO {
         return produtos;
     }
 
-    public void removeProduto(int id) {
-        Connection con = ConexaoDB.obterConexao();
-        PreparedStatement stmt = null;
-
-        try {
-            stmt = con.prepareStatement("update produtos set registro_deletado = true where id = ?");
-
-            stmt.setInt(1, id);
-
-            stmt.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            ConexaoDB.fecharConexao(con, stmt);
-        }
-    }
-
     public void salvarProduto(Produto p) {
         Connection con = ConexaoDB.obterConexao();
         PreparedStatement stmt = null;
@@ -138,7 +121,7 @@ public class ProdutoDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("update produtos set nome = ?, descricao = ?, preco_custo = ?, preco_venda = ?, quantidade = ?, ativo = ?, where id = ?;");
+            stmt = con.prepareStatement("update produtos set nome = ?, descricao = ?, preco_custo = ?, preco_venda = ?, quantidade = ?, ativo = ? where id = ?;");
 
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getDescricao());
